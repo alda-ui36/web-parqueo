@@ -3,13 +3,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { zonaSchema, type ZonaSchema } from "@/schemas/zona.schema";
-import type { ZonaResponse } from "@/types/zona.types";
-import { zonaService } from "@/service/zona.service";
+import {
+  metodoPagoSchema,
+  type MetodoPagoSchema,
+} from "@/schemas/metodo-pago.schema";
+import type { MetodoPagoResponse } from "@/types/metodo-pago.types";
+import { metodoPagoService } from "@/service/metodo-pago.service";
 
-export const useZonas = () => {
-  const [zonas, setZonas] = useState<ZonaResponse[]>([]);
-  const [editingZona, setEditingZona] = useState<ZonaResponse | null>(null);
+export const useMetodoPago = () => {
+  const [metodos, setMetodos] = useState<MetodoPagoResponse[]>([]);
+  const [editingMetodo, setEditingMetodo] = useState<MetodoPagoResponse | null>(
+    null
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [pagination, setPagination] = useState({
@@ -19,12 +24,12 @@ export const useZonas = () => {
     pageSize: 5,
   });
 
-  const form = useForm<ZonaSchema>({
-    resolver: zodResolver(zonaSchema),
-    defaultValues: { nombre: "", descripcion: "", totalEspacios: 1 },
+  const form = useForm<MetodoPagoSchema>({
+    resolver: zodResolver(metodoPagoSchema),
+    defaultValues: { nombre: "" },
   });
 
-  const loadZonas = async (
+  const loadMetodos = async (
     page = 0,
     size = 5,
     query?: string,
@@ -34,8 +39,8 @@ export const useZonas = () => {
       const filters: any = { page, size };
       if (query) filters.query = query;
       if (estado && estado !== "all") filters.estado = estado === "true";
-      const res = await zonaService.findAll(filters);
-      setZonas(res.data.content);
+      const res = await metodoPagoService.findAll(filters);
+      setMetodos(res.data.content);
       setPagination({
         currentPage: res.data.number,
         totalPages: res.data.totalPages,
@@ -46,28 +51,28 @@ export const useZonas = () => {
       const errorMessage =
         error.response?.data?.mensaje ||
         error.message ||
-        "Error al cargar zonas";
+        "Error al cargar métodos de pago";
       toast.error(errorMessage);
     }
   };
 
-  const handleSubmit = async (values: ZonaSchema) => {
+  const handleSubmit = async (values: MetodoPagoSchema) => {
     setSubmitting(true);
     try {
-      if (editingZona) {
-        await zonaService.update(editingZona.id, values);
-        toast.success("Zona actualizada correctamente");
+      if (editingMetodo) {
+        await metodoPagoService.update(editingMetodo.id, values);
+        toast.success("Método de pago actualizado correctamente");
       } else {
-        await zonaService.create(values);
-        toast.success("Zona creada correctamente");
+        await metodoPagoService.create(values);
+        toast.success("Método de pago creado correctamente");
       }
-      await loadZonas(pagination.currentPage, pagination.pageSize);
+      await loadMetodos(pagination.currentPage, pagination.pageSize);
       setDialogOpen(false);
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.mensaje ||
         error.message ||
-        "Error al guardar zona";
+        "Error al guardar método de pago";
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);
@@ -75,26 +80,22 @@ export const useZonas = () => {
   };
 
   const handleAdd = () => {
-    setEditingZona(null);
-    form.reset({ nombre: "", descripcion: "", totalEspacios: 1 });
+    setEditingMetodo(null);
+    form.reset({ nombre: "" });
     setDialogOpen(true);
   };
 
-  const handleEdit = (zona: ZonaResponse) => {
-    setEditingZona(zona);
-    form.reset({
-      nombre: zona.nombre,
-      descripcion: zona.descripcion,
-      totalEspacios: zona.totalEspacios,
-    });
+  const handleEdit = (metodo: MetodoPagoResponse) => {
+    setEditingMetodo(metodo);
+    form.reset({ nombre: metodo.nombre });
     setDialogOpen(true);
   };
 
   const toggleStatus = async (id: number) => {
     try {
-      await zonaService.toggleStatus(id);
+      await metodoPagoService.toggleStatus(id);
       toast.success("Estado cambiado correctamente");
-      await loadZonas(pagination.currentPage, pagination.pageSize);
+      await loadMetodos(pagination.currentPage, pagination.pageSize);
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.mensaje ||
@@ -105,17 +106,17 @@ export const useZonas = () => {
   };
 
   useEffect(() => {
-    loadZonas();
+    loadMetodos();
   }, []);
 
   return {
-    zonas,
-    editingZona,
+    metodos,
+    editingMetodo,
     dialogOpen,
     setDialogOpen,
     form,
     pagination,
-    loadZonas,
+    loadMetodos,
     handleSubmit,
     handleAdd,
     handleEdit,

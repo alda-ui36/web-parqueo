@@ -1,13 +1,13 @@
-import { mainApi } from "@/config/axios.config";
 import type { ApiResponse } from "@/types/api.types";
+import { mainApi } from "@/config/axios.config";
 import type {
-  MetodoPagoFilters,
-  MetodoPagoPageResponse,
   MetodoPagoRequest,
   MetodoPagoResponse,
+  MetodoPagoFilters,
+  MetodoPagoPageResponse,
 } from "@/types/metodo-pago.types";
 
-export const MetodoPagoService = {
+export const metodoPagoService = {
   async create(
     request: MetodoPagoRequest
   ): Promise<ApiResponse<MetodoPagoResponse>> {
@@ -28,7 +28,7 @@ export const MetodoPagoService = {
     return response.data;
   },
 
-  async getById(id: number): Promise<ApiResponse<MetodoPagoResponse>> {
+  async findById(id: number): Promise<ApiResponse<MetodoPagoResponse>> {
     const response = await mainApi.get(`/metodos-pago/${id}`);
     return response.data;
   },
