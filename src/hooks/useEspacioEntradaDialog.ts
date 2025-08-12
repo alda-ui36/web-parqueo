@@ -143,7 +143,6 @@ export function useEspacioEntradaDialog(
     }
   };
 
-  // Actualizar tarifaHora automáticamente al cambiar el tipo de vehículo
   useEffect(() => {
     const idTipo = form.watch("idTipoVehiculo");
     if (idTipo) {
