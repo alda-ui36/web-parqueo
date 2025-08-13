@@ -95,12 +95,15 @@ export const LoginPage = () => {
             {isLoading ? 'Iniciando sesión…' : 'Iniciar Sesión'}
           </Button>
 
-        <div className="text-center mt-4">
-            <Link to="/auth/request-code" className="text-sm text-blue-500 hover:underline">
+          {/* Forgot Password Link */}
+          <div className="text-center">
+            <Link
+              to="/auth/request-code"
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
               ¿Olvidaste tu contraseña?
             </Link>
-
-            </div>
+          </div>
         </form>
       </Form>
     </div>

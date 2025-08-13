@@ -1,4 +1,4 @@
-import type { PageResponse } from "./PageResponse";
+import type { PageResponse } from "./page.types";
 
 export interface MetodoPagoRequest {
   nombre: string;
@@ -9,6 +9,7 @@ export interface MetodoPagoResponse {
   nombre: string;
   estado: boolean;
 }
+
 export interface MetodoPagoFilters {
   query?: string;
   estado?: boolean;
@@ -16,4 +17,4 @@ export interface MetodoPagoFilters {
   size?: number;
 }
 
-export type MetodoPagoPageResponse = PageResponse<MetodoPagoResponse>;
+export type MetodoPagoPageResponse = PageResponse<MetodoPagoResponse>; 

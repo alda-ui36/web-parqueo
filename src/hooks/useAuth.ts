@@ -1,8 +1,8 @@
 import type { LoginRequest } from "../types/auth.types";
+import { authService } from "../services/auth.service";
+import { JwtUtil } from "../utils/jwt.utils";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/service/auth.service";
-import { JwtUtil } from "@/utils/jwt-utils";
 
 export const useAuth = () => {
   const navigate = useNavigate();
@@ -13,13 +13,10 @@ export const useAuth = () => {
       const { data } = response;
       JwtUtil.setTokens(data.data.accessToken, data.data.refreshToken);
       const userFromToken = JwtUtil.getUserData();
-      toast.success(`¡Bienvenido ${userFromToken?.name || "Usuario"}!`);
+      toast.success(`¡Bienvenido ${userFromToken?.name || 'Usuario'}!`);
       navigate("/");
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.mensaje ||
-        error.message ||
-        "Error de autenticación";
+      const errorMessage = error.response?.data?.mensaje || error.message || 'Error de autenticación';
       toast.error(errorMessage);
       throw error;
     }
@@ -27,3 +24,4 @@ export const useAuth = () => {
 
   return { login };
 };
+ 

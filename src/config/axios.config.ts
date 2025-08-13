@@ -1,14 +1,14 @@
-import { JwtUtil } from "@/utils/jwt-utils";
-import axios from "axios";
+import axios from 'axios';
+import { JwtUtil } from '@/utils/jwt.utils';
 
 export const authApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 30000,
+  timeout: 30000
 });
 
 export const mainApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 30000,
+  timeout: 30000
 });
 
 let isRefreshingToken = false;
@@ -17,18 +17,15 @@ let refreshPromise: Promise<any> | null = null;
 const refreshTokenRequest = async (): Promise<any> => {
   const refreshToken = JwtUtil.getRefreshToken();
   if (!refreshToken) return;
-  return authApi.post(
-    `/auth/refresh?refreshToken=${encodeURIComponent(refreshToken)}`
-  );
+  return authApi.post(`/auth/refresh?refreshToken=${encodeURIComponent(refreshToken)}`);
 };
 
-window.addEventListener("token-refresh-needed", async () => {
+window.addEventListener('token-refresh-needed', async () => {
   if (isRefreshingToken) return;
   isRefreshingToken = true;
   try {
     const response = await refreshTokenRequest();
-    const { accessToken, refreshToken: newRefreshToken } =
-      response?.data?.data || {};
+    const { accessToken, refreshToken: newRefreshToken } = response?.data?.data || {};
     if (accessToken && newRefreshToken) {
       JwtUtil.setTokens(accessToken, newRefreshToken);
       JwtUtil.startTokenRefreshTimer();
@@ -60,8 +57,7 @@ mainApi.interceptors.request.use(async (config) => {
       isRefreshingToken = true;
       refreshPromise = refreshTokenRequest()
         .then((response) => {
-          const { accessToken, refreshToken: newRefreshToken } =
-            response?.data?.data || {};
+          const { accessToken, refreshToken: newRefreshToken } = response?.data?.data || {};
           if (accessToken && newRefreshToken) {
             JwtUtil.setTokens(accessToken, newRefreshToken);
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -81,17 +77,10 @@ mainApi.interceptors.request.use(async (config) => {
 
 authApi.interceptors.response.use(
   (r) => r,
-  (e) => {
-    if (e.response?.status === 401) JwtUtil.handleLogout();
-    return Promise.reject(e);
-  }
+  (e) => { if (e.response?.status === 401) JwtUtil.handleLogout(); return Promise.reject(e); }
 );
 
 mainApi.interceptors.response.use(
   (r) => r,
-  (e) => {
-    if (e.response?.status === 401 && !e.config.url.includes("/auth/refresh"))
-      JwtUtil.handleLogout();
-    return Promise.reject(e);
-  }
+  (e) => { if (e.response?.status === 401 && !e.config.url.includes('/auth/refresh')) JwtUtil.handleLogout(); return Promise.reject(e); }
 );

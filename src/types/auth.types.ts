@@ -28,3 +28,4 @@ export interface ResetPasswordRequest {
   codigo: string;
   nuevaPassword: string;
 }
+

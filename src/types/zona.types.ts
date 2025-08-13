@@ -1,10 +1,11 @@
-import type { PageResponse } from "./PageResponse";
+import type { PageResponse } from "./page.types";
 
 export interface ZonaRequest {
   nombre: string;
   descripcion?: string;
   totalEspacios: number;
 }
+
 export interface ZonaResponse {
   id: number;
   nombre: string;
@@ -12,6 +13,7 @@ export interface ZonaResponse {
   estado: boolean;
   totalEspacios: number;
 }
+
 export interface ZonaFilters {
   query?: string;
   estado?: boolean;

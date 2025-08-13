@@ -1,4 +1,4 @@
-import type { PageResponse } from "./PageResponse";
+import type { PageResponse } from "./page.types";
 
 export interface EspacioRequest {
   zonaId: number;
@@ -24,4 +24,4 @@ export interface EspacioFilters {
   size?: number;
 }
 
-export type EspacioPageResponse = PageResponse<EspacioResponse>;
+export type EspacioPageResponse = PageResponse<EspacioResponse>; 

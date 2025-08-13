@@ -1,22 +1,19 @@
 import { z } from "zod";
 
 export const registroEntradaSchema = z.object({
-  placa: z.string().min(1, " la placa es requerida"),
-  marca: z.string().optional(),
-  color: z.string().optional(),
-  idTipoVehiculo: z.number().min(1, "selecciona un tipo de vehiculo"),
-  dni: z.string().min(8, "dni 8 digitos requerido").max(8, "dni maximo 9"),
-  nombres: z.string().min(1, " los nombres son requeridos"),
-  apePaterno: z.string().min(1, " el apellido paterno es requerido"),
-  apeMaterno: z.string().min(1, " el apellido materno es requerido"),
-  telefono: z
-    .string()
-    .min(9, "telefono 9 digitos requerido")
-    .max(9, "telefono maximo 9"),
-  direccion: z.string().optional(),
-  correo: z.string().min(1, "el correo es obligatorio"),
-  idEspacio: z.number().min(1),
-  tarifaHora: z.number().min(0, "la tarifa es obligatoria"),
+    placa: z.string().min(1, "La placa es obligatoria"),
+    marca: z.string().optional(),
+    color: z.string().optional(),
+    idTipoVehiculo: z.number().min(1, "Selecciona un tipo de vehículo"),
+    dni: z.string().min(8, "El DNI debe tener 8 dígitos").max(8, "El DNI debe tener 8 dígitos"),
+    nombres: z.string().min(1, "El nombre es obligatorio"),
+    apePaterno: z.string().min(1, "El apellido paterno es obligatorio"),
+    apeMaterno: z.string().min(1, "El apellido materno es obligatorio"),
+    telefono: z.string().regex(/^\d{0,9}$/, "Máximo 9 dígitos").optional(),
+    direccion: z.string().optional(),
+    correo: z.string().min(1, "El correo es obligatorio"),
+    idEspacio: z.number().min(1),
+    tarifaHora: z.number().min(0, "La tarifa es obligatoria"),
 });
 
-export type RegistroEntradaSchema = z.infer<typeof registroEntradaSchema>;
+export type RegistroEntradaSchema = z.infer<typeof registroEntradaSchema>; 

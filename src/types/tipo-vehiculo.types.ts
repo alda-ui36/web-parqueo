@@ -1,4 +1,4 @@
-import type { PageResponse } from "./PageResponse";
+import type { PageResponse } from "./page.types";
 
 export interface TipoVehiculoRequest {
   nombre: string;
@@ -21,4 +21,4 @@ export interface TipoVehiculoFilters {
   size?: number;
 }
 
-export type TipoVehiculoPageResponse = PageResponse<TipoVehiculoResponse>;
+export type TipoVehiculoPageResponse = PageResponse<TipoVehiculoResponse>; 
